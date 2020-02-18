@@ -1,33 +1,7 @@
-/*
-  Copyright (c) 2009, Hideyuki Tanaka
-  All rights reserved.
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are met:
-  * Redistributions of source code must retain the above copyright
-  notice, this list of conditions and the following disclaimer.
-  * Redistributions in binary form must reproduce the above copyright
-  notice, this list of conditions and the following disclaimer in the
-  documentation and/or other materials provided with the distribution.
-  * Neither the name of the <organization> nor the
-  names of its contributors may be used to endorse or promote products
-  derived from this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY <copyright holder> ''AS IS'' AND ANY
-  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  DISCLAIMED. IN NO EVENT SHALL <copyright holder> BE LIABLE FOR ANY
-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-
 #pragma once
 
 #include <iostream>
+#include <initializer_list>
 #include <sstream>
 #include <vector>
 #include <map>
@@ -40,7 +14,7 @@
 #ifdef __GNUC__
 #include <cxxabi.h>
 #endif
-namespace cmdline{
+namespace clasor{
 
 namespace detail{
 
@@ -161,7 +135,7 @@ struct range_reader{
   range_reader(const T &low, const T &high): low(low), high(high) {}
   T operator()(const std::string &s) const {
     T ret=default_reader<T>()(s);
-    if (!(ret>=low && ret<=high)) throw cmdline::cmdline_error("range_error");
+    if (!(ret>=low && ret<=high)) throw cmdline_error("range_error");
     return ret;
   }
 private:
@@ -188,127 +162,11 @@ private:
 };
 
 template <class T>
-oneof_reader<T> oneof(T a1)
-{
+oneof_reader<T> oneof(std::initializer_list<T> list) {
   oneof_reader<T> ret;
-  ret.add(a1);
-  return ret;
-}
-
-template <class T>
-oneof_reader<T> oneof(T a1, T a2)
-{
-  oneof_reader<T> ret;
-  ret.add(a1);
-  ret.add(a2);
-  return ret;
-}
-
-template <class T>
-oneof_reader<T> oneof(T a1, T a2, T a3)
-{
-  oneof_reader<T> ret;
-  ret.add(a1);
-  ret.add(a2);
-  ret.add(a3);
-  return ret;
-}
-
-template <class T>
-oneof_reader<T> oneof(T a1, T a2, T a3, T a4)
-{
-  oneof_reader<T> ret;
-  ret.add(a1);
-  ret.add(a2);
-  ret.add(a3);
-  ret.add(a4);
-  return ret;
-}
-
-template <class T>
-oneof_reader<T> oneof(T a1, T a2, T a3, T a4, T a5)
-{
-  oneof_reader<T> ret;
-  ret.add(a1);
-  ret.add(a2);
-  ret.add(a3);
-  ret.add(a4);
-  ret.add(a5);
-  return ret;
-}
-
-template <class T>
-oneof_reader<T> oneof(T a1, T a2, T a3, T a4, T a5, T a6)
-{
-  oneof_reader<T> ret;
-  ret.add(a1);
-  ret.add(a2);
-  ret.add(a3);
-  ret.add(a4);
-  ret.add(a5);
-  ret.add(a6);
-  return ret;
-}
-
-template <class T>
-oneof_reader<T> oneof(T a1, T a2, T a3, T a4, T a5, T a6, T a7)
-{
-  oneof_reader<T> ret;
-  ret.add(a1);
-  ret.add(a2);
-  ret.add(a3);
-  ret.add(a4);
-  ret.add(a5);
-  ret.add(a6);
-  ret.add(a7);
-  return ret;
-}
-
-template <class T>
-oneof_reader<T> oneof(T a1, T a2, T a3, T a4, T a5, T a6, T a7, T a8)
-{
-  oneof_reader<T> ret;
-  ret.add(a1);
-  ret.add(a2);
-  ret.add(a3);
-  ret.add(a4);
-  ret.add(a5);
-  ret.add(a6);
-  ret.add(a7);
-  ret.add(a8);
-  return ret;
-}
-
-template <class T>
-oneof_reader<T> oneof(T a1, T a2, T a3, T a4, T a5, T a6, T a7, T a8, T a9)
-{
-  oneof_reader<T> ret;
-  ret.add(a1);
-  ret.add(a2);
-  ret.add(a3);
-  ret.add(a4);
-  ret.add(a5);
-  ret.add(a6);
-  ret.add(a7);
-  ret.add(a8);
-  ret.add(a9);
-  return ret;
-}
-
-template <class T>
-oneof_reader<T> oneof(T a1, T a2, T a3, T a4, T a5, T a6, T a7, T a8, T a9, T a10)
-{
-  oneof_reader<T> ret;
-  ret.add(a1);
-  ret.add(a2);
-  ret.add(a3);
-  ret.add(a4);
-  ret.add(a5);
-  ret.add(a6);
-  ret.add(a7);
-  ret.add(a8);
-  ret.add(a9);
-  ret.add(a10);
+  for (auto &&para : list) {
+    ret.add(para);
+  }
   return ret;
 }
 
